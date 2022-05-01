@@ -1,0 +1,13 @@
+<% if current_user %>
+<h1>Student Grader Application</h1>
+
+<%= render "form", grader: @grader %>
+
+<button class="linking">
+  <%= link_to "Back to graders", graders_path %>
+</button>
+<% else %>
+  <p> You are not signed in. </p>
+  <%= link_to "Sign up", new_user_registration_path %> |
+  <%= link_to "Login", new_user_session_path %>
+<% end %>

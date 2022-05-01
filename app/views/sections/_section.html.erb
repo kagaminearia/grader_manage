@@ -1,0 +1,38 @@
+<div>
+  <p>
+    <strong>Section Number:</strong>
+    <%= section.number %>
+  </p>
+
+  <p>
+    <strong>Mode:</strong>
+    <%= section.mode %>
+  </p>
+
+  <p>
+    <strong>Status:</strong>
+    <%= section.status %>
+  </p>
+
+  <p>
+    <strong>Graders needed:</strong>
+    <%= section.graders_needed %>
+  </p>
+
+  <p>
+    <strong>Graders currently assigned:</strong>
+    <ul>
+    <% @graders.where(section_id: section.id).each do |grader| %>
+      <li><%= grader.first_name + " " + grader.last_name + ", " + grader.email %></li>
+    <% end %>
+    </ul>
+  </p>
+
+  <p>
+    <strong>Time:</strong>
+    <%= section.start_time %>
+    -
+    <%= section.end_time %>
+  </p>
+  
+</div>

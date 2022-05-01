@@ -1,0 +1,19 @@
+<%= stylesheet_link_tag "recommendations" %>
+<% if current_user %>
+  <h1>Recommendations</h1>
+
+  <div class="recommendations">
+    <% @recommendations.each do |recommendation| %>
+      <%= render recommendation %>
+      <p>
+        <%= link_to "Show this recommendation", recommendation %>
+      </p>
+    <% end %>
+  </div>
+
+  <%= link_to "New recommendation", new_recommendation_path %>
+<% else %>
+  <p>You are not signed in.</p>
+  <%= link_to "Sign up", new_user_registration_path %> |
+  <%= link_to "Login", new_user_session_path %>
+<% end %>

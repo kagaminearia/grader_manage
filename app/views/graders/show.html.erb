@@ -1,0 +1,37 @@
+<% if current_user %>
+  <h1>Filled Out Grader Application</h1>
+  <table>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Interested Courses</th>
+      <th>Available Time(s)</th>
+    </tr>
+    <%= render @grader %>
+    </tr>
+  </table>
+
+  <br />
+  <% if current_user.admin? && @grader.section_id.nil? %>
+    <h3>Assign Grader to a Section</h3>
+    <%= render "form2", grader: @grader %>
+  <% elsif current_user.admin? && !@grader.section_id.nil? %>
+    <% section = Section.find(@grader.section_id) %>
+    <p>Grader is currently assigned to <% section.course.subject + " " + section.course.catalognumber %> section <%= section.number %>.</p>
+  <% end %>
+
+  <div class="lined-up linking">
+    <% if current_user.email.casecmp(@grader.email).zero? %>
+      <%= link_to "Edit grader application", edit_grader_path(@grader) %> |
+    <% end %>
+    <%= link_to "Back to graders", graders_path %>
+    <% if current_user.admin? && current_user.present? %>
+      | <%= button_to "Destroy this grader", @grader, method: :delete, :style => "margin-left: 0.2rem;" %>
+    <% end %>
+  </div>
+<% else %>
+  <p>You are not signed in.</p>
+  <%= link_to "Sign up", new_user_registration_path %> |
+  <%= link_to "Login", new_user_session_path %>
+<% end %>

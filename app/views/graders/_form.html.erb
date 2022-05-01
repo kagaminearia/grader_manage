@@ -1,0 +1,51 @@
+<%= form_with(model: grader) do |f| %>
+  <% if grader.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(grader.errors.count, "error") %> prohibited this grader from being saved:</h2>
+
+      <ul>
+        <% grader.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name, autofocus: true %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="field checkbox">
+    <%= f.label "Interested Courses" %>
+    <br /><% @courses.each do |key| %>
+      <% if !key.sections.nil? %>
+        <%= f.check_box :classes, { multiple: true}, key.id, nil %>
+        <%= f.label key.subject %>
+        <%= f.label key.catalognumber %><br />
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="field checkbox">
+    <%= f.label "Available Time" %>
+    <br /><% Grader::AVAILABLE_TIMES.each do |key| %>
+      <%= f.check_box :available_times, { multiple: true}, key, nil %>
+      <%= f.label key %><br />
+    <% end %>
+  </div>
+
+  <div>
+    <br /><%= f.submit %>
+  </div>
+<% end %>

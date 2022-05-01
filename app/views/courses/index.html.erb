@@ -1,0 +1,19 @@
+<% if current_user %>
+  <h1>Courses</h1>
+    <% if current_user.admin? && current_user.reviewed? %>
+      <%= link_to "New course", new_course_path %>
+      <%= form_tag ({ :controller => 'courses', :action => 'reload_courses' }) do %>
+        <%= submit_tag 'Reload Courses', :class => 'spacing' %>
+    <% end %>    
+  <% end %>
+
+  <div class="courses">
+    <% @courses.each do |course| %>
+      <%= render course %>
+    <% end %>
+  </div>
+<% else %>
+      <p> You must login in order to view the course catalog. </p>
+      <%= link_to "Sign up", new_user_registration_path %> |
+      <%= link_to "Login", new_user_session_path %>
+<% end %>

@@ -1,0 +1,32 @@
+/* Classes */
+.checkbox {
+    border-style: solid;
+    padding-top: 0.5rem;
+    padding-left: 0.2rem;
+    margin: 1rem auto 1rem auto;
+}
+
+.cse_courses {
+    border-radius: 2px;
+    border-style: outset;
+}
+
+.linking {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.lined-up {
+    display: -webkit-box;
+}
+
+/* Main */
+table {
+    background-color: #c9c9c9;
+    border-style: groove;
+}
+
+th {
+    background-color: #ff3636;
+    text-shadow: 0.2rem 0.2rem 0.9rem;
+}

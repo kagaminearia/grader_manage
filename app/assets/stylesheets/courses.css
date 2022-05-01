@@ -1,0 +1,15 @@
+/* Classes */
+.course {
+    background-color: #c9c9c9;
+    margin-bottom: 2rem;
+    padding: 1rem;
+}
+
+.page {
+    padding: 3px;
+}
+
+.spacing {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

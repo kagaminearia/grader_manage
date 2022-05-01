@@ -1,0 +1,17 @@
+<div id="<%= dom_id grader %>">
+  <tr>
+    <td><%= grader.first_name %></td>
+    <td><%= grader.last_name %></td>
+    <td><%= grader.email %></td>
+    <td>
+      <% grader.classes.each do |course_id| %>
+        <% course = Course.find(course_id) %>
+        <%= course.subject + " " + course.catalognumber %> |
+      <% end %>
+    </td>
+    <td>
+      <% grader.available_times.each do |time| %>
+        <%= time %> |
+      <% end %>
+    </td>
+</div>

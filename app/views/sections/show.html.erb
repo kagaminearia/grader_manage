@@ -1,0 +1,9 @@
+<%= render @section %>
+
+<div class="lined-up">
+  <%= link_to "Back to course", @section.course %> |
+  <% if current_user.present? and current_user.admin? %>
+        <%= link_to "Edit this section", edit_course_section_path(course_id: @section.course, id: @section.id), method: :patch %> |
+        <%= button_to "Destroy this section", course_section_path(course_id: @section.course, id: @section.id), method: :delete %>
+  <% end %>
+</div>

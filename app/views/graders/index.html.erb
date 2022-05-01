@@ -1,0 +1,29 @@
+<h1>Graders</h1>
+<% if current_user %>
+  <table id="graders">
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Interested Courses</th>
+      <th>Available Time(s)</th>
+      <th>View Grader App</th>
+    </tr>
+    <% @graders.each do |grader| %>
+      <%= render grader %>
+      <% if current_user.email.casecmp(grader.email).zero? || current_user.admin? %>
+        <td>
+          <%= link_to "Show this grader", grader %>
+        </td>
+      <% end %>
+      </tr>
+    <% end %>
+  </table>
+  <% if current_user.student? %>
+    <%= link_to "New grader", new_grader_path %>
+  <% end %>
+<% else %>
+  <p>You are not signed in.</p>
+  <%= link_to "Sign up", new_user_registration_path %> |
+  <%= link_to "Login", new_user_session_path %>
+<% end %>

@@ -1,0 +1,55 @@
+<%# Form for assigning graders to sections %>
+<%= form_with model: @grader do |f| %>
+    <%# Combine contiguous grader windows %>
+    <% grader_windows = Array.new %>
+    <% @grader.available_times.each do |window| %>
+        <% if grader_windows.length > 0 && (grader_windows.last.split('_')[2] === window.split('_')[0]) %>
+            <% prev_window = grader_windows.pop %>
+            <% new_window = prev_window.split('_')[0] + "_-_" + window.split('_')[2] %>
+            <% grader_windows.push(new_window) %>
+        <% elsif !grader_windows.include?(window) %>
+            <% grader_windows.push(window) %>
+        <% end %>
+    <% end %>
+    <div class="field radio">
+    <% @grader.classes.each do |course_id| %>
+        <% course = Course.find(course_id) %>
+        <% if course.sections.length > 0 %>
+        <%= course.subject + " " + course.catalognumber + ":" %><br />
+        <% course.sections.each do |section| %>
+            <% if section.num_graders < section.graders_needed %>
+                <% grader_windows.each do |window| %>
+                    <%# Grader's window is in both morning and afternoon %>
+                    <% if @grader.available_times.first.include?("AM") && @grader.available_times.last.include?("PM") %>
+                        <% if section.end_time.split(' ')[0] < window.split('_')[0] || section.start_time.split(' ')[0] > window.split('_')[2] %>
+                            <% next %>
+                        <% end %> 
+                    <%# Grader's window is only in the afternoon %>
+                    <% elsif @grader.available_times.first.include?("PM") && @grader.available_times.last.include?("PM") %>
+                        <%# Skip all AM sections %>
+                        <% if section.start_time.include?("am") || section.end_time.include?("am") %>
+                            <% next %>
+                        <% end %> 
+                    <%# Grader's window is only in the morning %>
+                    <% elsif @grader.available_times.first.include?("AM") && @grader.available_times.last.include?("AM") %>
+                        <%# Skip all PM sections %>
+                        <% if section.start_time.include?("pm") || section.end_time.include?("pm") %>
+                            <% next %>
+                        <% end %>
+                    <% end %>
+                    <% if window.split('_')[0] <= section.start_time.split(' ')[0] && section.end_time.split(' ')[0] <= window.split('_')[2] %>
+                        <%= f.radio_button @grader.section_id, section.id %>
+                        <%= f.label section.number + " | " + section.mode + " | " + section.start_time + "-" + section.end_time %>
+                        <br />
+                    <% end %>
+                <% end %>
+            <% end %>
+        <% end %>
+        <br />
+        <% end %>
+    <% end %>
+    </div>
+    <div>
+    <%= f.submit "Assign Grader" %>
+    </div>
+<% end %>

@@ -1,0 +1,42 @@
+<div class="<%= dom_class course %>">
+  <p>
+    <strong>Subject:</strong>
+    <%= course.subject %>
+  </p>
+
+  <p>
+    <strong>Catalog Number:</strong>
+    <%= course.catalognumber %>
+  </p>
+
+  <p>
+    <strong>Course Title:</strong>
+    <%= course.coursetitle %>
+  </p>
+
+  <p>
+    <strong>Course Description:</strong>
+    <%= course.coursedescription %>
+  </p>
+
+  <p>
+    <strong>Campus:</strong>
+    <%= course.campus %>
+  </p>
+
+  <p>
+    <strong>Sections:</strong>
+    <br>
+    <% course.sections.each do |section| %>
+      <%= section.number %> |
+      <%= section.mode %> |
+      <%= section.start_time %>-<%= section.end_time %> |
+      <%= section.status %> |
+      <%= link_to "View this section", course_section_path(course_id: course.id, id: section.id) %>
+      <br>
+    <% end %>
+  </p>
+
+  <%= link_to "Show Course", course %>
+  
+</div>

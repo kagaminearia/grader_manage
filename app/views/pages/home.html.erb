@@ -1,0 +1,64 @@
+<h1>Home Page</h1>
+
+<head>
+    <%= stylesheet_link_tag "application" %>
+</head>
+
+<% if current_user %>
+    <p class = "current">Hello <%= current_user.email %>!</p>
+    <% if current_user.admin? %>
+        <p>You are an [<%= current_user.role %>].</p>
+        <% if current_user.reviewed %>
+            <p>You have been approved and have full admin permissions.</p>
+
+            <p>There are [<%= @users.length %>] users in the system.</p>
+            <p>There are [<%= @users.where(reviewed: false).count %>] users waiting to be approved. </p> 
+        <% if @users.where(reviewed: false).count > 0 %>
+        <table>
+            <tr>    
+                <th>User Email</th>
+                <th>Intended Role</th>
+                <th>Approve User</th>
+            </tr>
+            <% @users.where(reviewed: false).each do |user| %>
+            <tr> 
+                <td><%= user.email %></td>
+                <td><%= user.role %></td>
+                <td><%= button_to "Approve", toggle_reviewed_page_path(id: user.id), method: :patch %></td>
+            </tr>
+        </table>
+        <% end %>
+        <%end%>
+        <% else %>
+            <p>You are still waiting on admin approval. </p>
+        <%end%>
+    <% elsif current_user.instructor? %>
+        <p class = "current">You are an [<%= current_user.role %>].</p>
+        <% if current_user.reviewed? %>
+            <p class = "current">You have been approved and have full instructor permissions.</p>
+        <% else %>
+            <p class = "current">You are still waiting on admin approval. </p>
+        <% end %>
+        <p class = "instructor">
+            You can submit recommendations for students to be hired. 
+            Check out the <%= link_to "recommendation catalog.", "/recommendations" %></p>
+    <% else %>
+        <p class = "current">You are a [<%= current_user.role %>].</p>
+    <% end %>
+    <p class = "current">
+        You have successfully authenticated with your OSU account.
+        You are now ready to interact with the <%= link_to "course catalog.", "/courses" %>
+    </p>
+    <% if current_user.student? %>
+        <p class = "student">
+            You can submit applications to be considering as a grader.  
+            See your application information here 
+            <%= link_to "grader application", "/graders" %></p>
+    <% end %>
+    <%= link_to 'Edit profile', edit_user_registration_path %> |
+    <%= link_to "Logout", destroy_user_session_path, 'data-turbo-method': :delete %>
+<% else %>
+    <p = "new">You are not signed in.</p>
+    <%= link_to "Sign up", new_user_registration_path %> |
+    <%= link_to "Login", new_user_session_path %>
+<% end %>

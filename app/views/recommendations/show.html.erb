@@ -1,0 +1,14 @@
+<% if current_user %>
+  <%= render @recommendation %>
+
+  <div>
+    <%= link_to "Edit this recommendation", edit_recommendation_path(@recommendation) %> |
+    <%= link_to "Back to recommendations", recommendations_path %>
+
+    <%= button_to "Destroy this recommendation", @recommendation, method: :delete %>
+  </div>
+<% else %>
+  <p>You are not signed in.</p>
+  <%= link_to "Sign up", new_user_registration_path %> |
+  <%= link_to "Login", new_user_session_path %>
+<% end %>
